@@ -37,4 +37,5 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.umeng.analytics:analytics:latest.integration'
     testCompile 'junit:junit:4.12'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
 }
