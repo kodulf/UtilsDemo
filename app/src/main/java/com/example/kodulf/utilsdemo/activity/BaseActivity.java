@@ -38,6 +38,12 @@ public abstract class BaseActivity extends AppCompatActivity{
 
         Log.d(APP_NAME, ACTIVITY_NAME +"-->onCreate");
         thirdPartyInitOnCreate();
+
+        //默认的排序也给出
+        findView();
+        initView();
+        initData();
+        setOnClick();
     }
 
 
@@ -115,7 +121,36 @@ public abstract class BaseActivity extends AppCompatActivity{
      */
     protected abstract void setOnClick();
 
+    /**
+     * 需要在onSaveInstance里面执行的
+     * 例如像是一些全局变量，可以在这里保存了，然后再在onRestoreInstance里面执行
+     * 如果在内存较少的时候，例如打开了很多的应用，这个时候gc 会将一些切换到后台运行的程序里面的全局变量修改为默认的值，
+     * 例如有一个类的全局变量是Cashier ，之前有设置过，但是在上面的那种情况，就会发生再次打开的时候Cashier为null
+     * 所以需要在onSaveInstance的时候将它保存，然后在onRestoreInstance的时候在进行加载
+     */
+    protected void needDoInSaveInstance(){
 
+    };
+
+    /**
+     * 需要在onRestoreInstance里面执行的
+     */
+    protected void needDoInRestoreInstance(){
+
+    };
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        needDoInSaveInstance();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        needDoInRestoreInstance();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -49,7 +49,6 @@ public class VoiceActivity extends BaseActivity {
 
         //默认开启这个监听的service,已经在application 里面打开了
         //startWakeUpService();
-        findView();
     }
 
 
