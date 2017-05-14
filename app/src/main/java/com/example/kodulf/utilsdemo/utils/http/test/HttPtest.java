@@ -1,6 +1,7 @@
 package com.example.kodulf.utilsdemo.utils.http.test;
 
 import com.example.kodulf.utilsdemo.entity.City;
+import com.example.kodulf.utilsdemo.entity.Flow;
 import com.example.kodulf.utilsdemo.utils.http.RequestCallback;
 import com.example.kodulf.utilsdemo.utils.http.Result;
 import com.example.kodulf.utilsdemo.utils.http.ResultList;
@@ -37,7 +38,7 @@ public class HttPtest {
                         for (int i = 0; i < result.size(); i++) {
                             City city = result.get(i);
                             System.out.println(city.getCity());
-                            ArrayList<City.Flow> flows = city.getFlows();
+                            ArrayList<Flow> flows = city.getFlows();
                             for (int j = 0; j < flows.size(); j++) {
                                 System.out.println(flows.get(j).getP());
                             }
