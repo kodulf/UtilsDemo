@@ -30,7 +30,7 @@ public class MyApplication extends LitePalApplication {
 
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "="+"590de610");//后面的根据每次的不同可以修改的
 
-        //startWakeUpService();
+        startWakeUpService();
     }
 
     /**

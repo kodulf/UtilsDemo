@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,17 +30,18 @@ import okhttp3.ResponseBody;
 
 public class OkHttpUtils {
 
-    public final static int CONNECT_TIMEOUT =10;
-    public final static int READ_TIMEOUT=10;
-    public final static int WRITE_TIMEOUT=10;
+    //可以不用设置，直接使用默认的
+//    public final static int CONNECT_TIMEOUT =10;
+//    public final static int READ_TIMEOUT=10;
+//    public final static int WRITE_TIMEOUT=10;
 
     /**
      * 初始化OkHttpClient
      */
     static OkHttpClient client =  new OkHttpClient.Builder()
-            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)//设置读取超时时间
-            .writeTimeout(WRITE_TIMEOUT,TimeUnit.SECONDS)//设置写的超时时间
-            .connectTimeout(CONNECT_TIMEOUT,TimeUnit.SECONDS)//设置连接超时时间
+//            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)//设置读取超时时间
+//            .writeTimeout(WRITE_TIMEOUT,TimeUnit.SECONDS)//设置写的超时时间
+//            .connectTimeout(CONNECT_TIMEOUT,TimeUnit.SECONDS)//设置连接超时时间
             .build();
 
 
@@ -56,25 +56,15 @@ public class OkHttpUtils {
     public static <T> void postRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback,final T t) throws IOException {
 
         final Result<T> result = new Result<>();
+        Call call = initPostCall(path, values);
 
-        //添加参数
-        FormBody.Builder builder = new FormBody.Builder();
-        Set<Map.Entry<String, String>> entries = values.entrySet();
-        for (Map.Entry<String,String> entry:entries){
-            builder.add(entry.getKey(),entry.getValue());
-        }
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(path)
-                .post(body)
-                .build();
-
-        Call call = client.newCall(request);
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                if(client==null){
+                    client = new OkHttpClient.Builder().build();
+                }
                 callback.onFailure(call,e);
             }
 
@@ -109,6 +99,8 @@ public class OkHttpUtils {
     }
 
 
+
+
     /**
      * post请求ResultList<T>
      * @param path
@@ -117,92 +109,19 @@ public class OkHttpUtils {
      * @param <T>
      * @throws IOException
      */
-    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback,final T t) throws IOException {
+    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback, final T t) throws IOException {
 
         final ResultList<T> result = new ResultList<>();
 
         //添加参数
-        FormBody.Builder builder = new FormBody.Builder();
-        Set<Map.Entry<String, String>> entries = values.entrySet();
-        for (Map.Entry<String,String> entry:entries){
-            builder.add(entry.getKey(),entry.getValue());
-        }
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(path)
-                .post(body)
-                .build();
-
-        Call call = client.newCall(request);
+        Call call = initPostCall(path, values);
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                callback.onFailure(call,e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-
-                    String string = response.body().string();
-                    System.out.println(string);
-
-                    try {
-                       //HttpHelpUtils.parseJsonStringToResultListNew(result,string);
-                        HttpHelpUtils.parseJsonStringToResultListGeneric(result,string,t);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        callback.onFailure(call,e);
-                        return;
-                    }
-
-                    if(result.isSuccess()){
-                        callback.onResponse(call,result);
-                    }else{
-                        callback.onFailure(call,new IOException("Unexpected code " + response));
-                    }
-
-                } else {
-                    callback.onFailure(call,new IOException("Unexpected code " + response));
+                if(client==null){
+                    client = new OkHttpClient.Builder().build();
                 }
-
-            }
-        });
-    }
-
-    /**
-     * post请求ResultList<T>
-     * @param path
-     * @param values
-     * @param callback
-     * @param <T>
-     * @throws IOException
-     */
-    public static <T> void postRequestForResultListT(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback, final T t) throws IOException {
-
-        final ResultList<T> result = new ResultList<>();
-
-        //添加参数
-        FormBody.Builder builder = new FormBody.Builder();
-        Set<Map.Entry<String, String>> entries = values.entrySet();
-        for (Map.Entry<String,String> entry:entries){
-            builder.add(entry.getKey(),entry.getValue());
-        }
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(path)
-                .post(body)
-                .build();
-
-        Call call = client.newCall(request);
-
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
                 callback.onFailure(call,e);
             }
 
@@ -248,19 +167,15 @@ public class OkHttpUtils {
     public static <T> void getRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback,final T t){
         final Result<T> result = new Result<>();
 
-        StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
-
-        if(parametersString!=null&&StringUtils.isNotEmpty(parametersString.toString())) {
-            path = path + "?" + parametersString.toString();
-        }
-        Request request = new Request.Builder().url(path).build();
-
-        Call call = client.newCall(request);
+        Call call = initGetCall(path, values);
 
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                if(client==null){
+                    client = new OkHttpClient.Builder().build();
+                }
                 callback.onFailure(call,e);
             }
 
@@ -305,20 +220,15 @@ public class OkHttpUtils {
     public static <T> void getRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback,final T t){
         final ResultList<T> result = new ResultList<>();
 
-        StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
-
-        if(parametersString!=null&&StringUtils.isNotEmpty(parametersString.toString())) {
-            path = path + "?" + parametersString.toString();
-        }
-
-        Request request = new Request.Builder().url(path).build();
-
-        Call call = client.newCall(request);
+        Call call = initGetCall(path, values);
 
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                if(client==null){
+                    client = new OkHttpClient.Builder().build();
+                }
                 callback.onFailure(call,e);
             }
 
@@ -351,6 +261,7 @@ public class OkHttpUtils {
         });
     }
 
+
     /**
      * get 方法下载
      * @param urlString
@@ -365,21 +276,15 @@ public class OkHttpUtils {
 
         final Result<T> result = new Result();
 
-        StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
-
-        if(parametersString!=null&&StringUtils.isNotEmpty(parametersString.toString())) {
-           urlString = urlString + "?" + parametersString.toString();
-        }
-
-        Request request = new Request.Builder().url(urlString).build();
-
-
-        Call call = client.newCall(request);
+        Call call = initGetCall(urlString, values);
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                if(client==null){
+                    client = new OkHttpClient.Builder().build();
+                }
+                requestCallback.onFailure(new Result(),e);
             }
 
             @Override
@@ -439,33 +344,23 @@ public class OkHttpUtils {
      * @param values
      * @param returnFile
      * @param requestCallback
-     * @param <T>
      * @throws Exception
      */
-    private static <T> void postDownload(String urlString, HashMap<String,String> values, final File returnFile, final RequestCallback<Result<T>> requestCallback) throws Exception{
+    private static void postDownload(String urlString, HashMap<String,String> values, final File returnFile, final RequestCallback<Result> requestCallback) throws Exception{
         //urlString = "http://pic.qiushibaike.com/system/pictures/11895/118959315/medium/app118959315.jpg";
 
-        final Result<T> result = new Result();
+        final Result result = new Result();
 
         //添加参数
-        FormBody.Builder builder = new FormBody.Builder();
-        Set<Map.Entry<String, String>> entries = values.entrySet();
-        for (Map.Entry<String,String> entry:entries){
-            builder.add(entry.getKey(),entry.getValue());
-        }
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(urlString)
-                .post(body)
-                .build();
-
-        Call call = client.newCall(request);
+        Call call = initPostCall(urlString, values);
 
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                    if(client==null){
+                        client = new OkHttpClient.Builder().build();
+                    }
+                    requestCallback.onFailure(new Result(),e);
             }
 
             @Override
@@ -516,6 +411,55 @@ public class OkHttpUtils {
             }
         });
 
+    }
+
+    /**
+     * 请求里面，初始化post 请求的Call
+     * @param path
+     * @param values
+     * @return
+     */
+    private static Call initPostCall(String path, HashMap<String, String> values) {
+        //添加参数
+        FormBody.Builder builder = new FormBody.Builder();
+        Set<Map.Entry<String, String>> entries = values.entrySet();
+        for (Map.Entry<String,String> entry:entries){
+            builder.add(entry.getKey(),entry.getValue());
+        }
+        FormBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url(path)
+                .post(body)
+                .build();
+
+        if(client==null){
+            client = new OkHttpClient.Builder().build();
+        }
+
+        return client.newCall(request);
+    }
+
+
+    /**
+     * 初始化Get的请求的call
+     * @param path
+     * @param values
+     * @return
+     */
+    private static Call initGetCall(String path, HashMap<String, String> values) {
+        StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
+
+        if(parametersString!=null&& StringUtils.isNotEmpty(parametersString.toString())) {
+            path = path + "?" + parametersString.toString();
+        }
+
+        Request request = new Request.Builder().url(path).build();
+
+        if(client==null){
+            client = new OkHttpClient.Builder().build();
+        }
+        return client.newCall(request);
     }
 
 }

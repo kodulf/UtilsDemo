@@ -5,8 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kodulf.utilsdemo.activity.BaseActivity;
+import com.example.kodulf.utilsdemo.entity.City;
+import com.example.kodulf.utilsdemo.utils.http.ResultList;
+import com.example.kodulf.utilsdemo.utils.http.okhttp.OkHttpResponseCallback;
+import com.example.kodulf.utilsdemo.utils.http.services.ServiceContext;
 import com.example.kodulf.utilsdemo.utils.voice.JsonParser;
 import com.example.kodulf.utilsdemo.utils.voice.WakeupService;
 import com.iflytek.cloud.InitListener;
@@ -25,20 +31,25 @@ import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.iflytek.cloud.util.ResourceUtil;
 
+import java.util.List;
+
+import okhttp3.Call;
+
 /**
  * 这个是一个一个测试的，
  * 其实只是为了测试
  * 最后只要一个WakeupService就够了
  */
 public class VoiceActivity extends BaseActivity {
-
+    private TextView mTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
 
-        //默认开启这个监听的service
+        //默认开启这个监听的service,已经在application 里面打开了
         //startWakeUpService();
+        findView();
     }
 
 
@@ -52,7 +63,7 @@ public class VoiceActivity extends BaseActivity {
 
     @Override
     protected void findView() {
-
+        mTextView = ((TextView) findViewById(R.id.details));
     }
 
     @Override
@@ -267,5 +278,38 @@ public class VoiceActivity extends BaseActivity {
     public void jumpToThirdActivity(View view) {
         Intent intent = new Intent(this,ThirdActivity.class);
         startActivity(intent);
+    }
+
+    public void startOkHttp(View view) {
+        ServiceContext.getoKhttpService().getList(new OkHttpResponseCallback<ResultList<City>>() {
+            @Override
+            public void onFailure(Call call, Exception e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(VoiceActivity.this,"fail",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final ResultList<City> cityResultList) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(VoiceActivity.this,"success",Toast.LENGTH_SHORT).show();
+                        List<City> result = cityResultList.getResult();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < result.size(); i++) {
+                            City city = result.get(i);
+                            sb.append( city.getCity()+" "+city.getFlows());
+                            sb.append("\n");
+                        }
+                        mTextView.setText(sb.toString()+"");
+                    }
+                });
+
+            }
+        });
     }
 }
