@@ -54,6 +54,7 @@ public class HttPtest {
                     @Override
                     public void onResponse(Call call, Result<String> stringResult) {
                         System.out.println(stringResult);
+                        System.out.println(stringResult.getResult());
                     }
 
                 });
