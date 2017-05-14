@@ -1,7 +1,9 @@
 package com.example.kodulf.utilsdemo.utils.http;
 
 
- /**
+import java.io.Serializable;
+
+/**
  * Created by zhangyinshan on 2017/5/3.
  *
  * {
@@ -10,7 +12,7 @@ package com.example.kodulf.utilsdemo.utils.http;
  "error_code": 0
  }
  */
-public class Result<T> {
+public class Result<T> implements Serializable{
 
     public static final int FAIL = -1;
     public static final int SUCCESS = 0;

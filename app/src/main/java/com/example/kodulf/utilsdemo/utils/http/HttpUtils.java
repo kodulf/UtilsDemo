@@ -30,29 +30,29 @@ public class HttpUtils {
     /**
      * GET 方法 的请求的获取Result
      */
-    public static <T> void getRequestForResult(String path, HashMap<String,String> values, RequestCallback<Result<T>> callback) throws Exception {
-        requestForResult("GET",path,values,callback);
+    public static <T> void getRequestForResult(String path, HashMap<String,String> values, RequestCallback<Result<T>> callback, T t) throws Exception {
+        requestForResult("GET",path,values,callback,t);
     }
 
     /**
      * POST 方法 的请求的获取Result
      */
-    public static <T> void postRequestForResult(String path, HashMap<String,String> values, RequestCallback<Result<T>> callback) throws Exception {
-        requestForResult("POST",path,values,callback);
+    public static <T> void postRequestForResult(String path, HashMap<String,String> values, RequestCallback<Result<T>> callback,T t) throws Exception {
+        requestForResult("POST",path,values,callback,t);
     }
 
     /**
      * GET 的请求的获取ResultList
      */
-    public static <T> void getRequestForResultList(String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback) throws Exception {
-        requestForResultList("GET",path,values,callback);
+    public static <T> void getRequestForResultList(String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback,T t) throws Exception {
+        requestForResultList("GET",path,values,callback,t);
     }
 
     /**
      * POST 的请求的获取ResultList
      */
-    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback) throws Exception {
-        requestForResultList("POST",path,values,callback);
+    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback,T t) throws Exception {
+        requestForResultList("POST",path,values,callback,t);
     }
 
 
@@ -65,7 +65,7 @@ public class HttpUtils {
      * @param <T>
      * @throws Exception
      */
-    private static <T> void requestForResult(String postOrGet,String path, HashMap<String,String> values, RequestCallback<Result<T>> callback) throws Exception {
+    private static <T> void requestForResult(String postOrGet,String path, HashMap<String,String> values, RequestCallback<Result<T>> callback,final T t) throws Exception {
 
         Result<T> result = new Result<T>();
         URL url = new URL(path);
@@ -118,7 +118,7 @@ public class HttpUtils {
                 String readString = byteArrayOutputStream.toString();
 
                 //这里进行json解析
-                HttpHelpUtils.parseJsonStringToResult(result, readString);
+                HttpHelpUtils.parseJsonStringToResultGeneric(result, readString,t);
 
             }finally {
                 if(inputStream!=null&& byteArrayOutputStream !=null) {
@@ -152,7 +152,7 @@ public class HttpUtils {
      * @param <T>
      * @throws Exception
      */
-    private static <T> void requestForResultList(String postOrGet,String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback) throws Exception {
+    private static <T> void requestForResultList(String postOrGet,String path, HashMap<String,String> values, RequestCallback<ResultList<T>> callback,T t) throws Exception {
 
         ResultList<T> resultList = new ResultList<T>();
         URL url = new URL(path);
@@ -203,7 +203,7 @@ public class HttpUtils {
                 String readString = byteArrayOutputStream.toString();
 
                 //这里进行json解析
-                HttpHelpUtils.parseJsonStringToResultList(resultList, readString);
+                HttpHelpUtils.parseJsonStringToResultListGeneric(resultList, readString,t);
 
             }finally {
                 if(inputStream!=null&& byteArrayOutputStream !=null) {

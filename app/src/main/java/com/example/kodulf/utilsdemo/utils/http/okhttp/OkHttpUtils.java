@@ -53,7 +53,7 @@ public class OkHttpUtils {
      * @param <T>
      * @throws IOException
      */
-    public static <T> void postRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback) throws IOException {
+    public static <T> void postRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback,final T t) throws IOException {
 
         final Result<T> result = new Result<>();
 
@@ -84,9 +84,9 @@ public class OkHttpUtils {
                 if (response.isSuccessful()) {
 
                     String string = response.body().string();
-
+                    System.out.println(string);
                     try {
-                        HttpHelpUtils.parseJsonStringToResult(result,string);
+                        HttpHelpUtils.parseJsonStringToResultGeneric(result,string,t);
                     } catch (Exception e) {
                         e.printStackTrace();
                         callback.onFailure(call,e);
@@ -117,7 +117,7 @@ public class OkHttpUtils {
      * @param <T>
      * @throws IOException
      */
-    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback) throws IOException {
+    public static <T> void postRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback,final T t) throws IOException {
 
         final ResultList<T> result = new ResultList<>();
 
@@ -148,9 +148,75 @@ public class OkHttpUtils {
                 if (response.isSuccessful()) {
 
                     String string = response.body().string();
+                    System.out.println(string);
 
                     try {
-                        HttpHelpUtils.parseJsonStringToResultList(result,string);
+                       //HttpHelpUtils.parseJsonStringToResultListNew(result,string);
+                        HttpHelpUtils.parseJsonStringToResultListGeneric(result,string,t);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        callback.onFailure(call,e);
+                        return;
+                    }
+
+                    if(result.isSuccess()){
+                        callback.onResponse(call,result);
+                    }else{
+                        callback.onFailure(call,new IOException("Unexpected code " + response));
+                    }
+
+                } else {
+                    callback.onFailure(call,new IOException("Unexpected code " + response));
+                }
+
+            }
+        });
+    }
+
+    /**
+     * post请求ResultList<T>
+     * @param path
+     * @param values
+     * @param callback
+     * @param <T>
+     * @throws IOException
+     */
+    public static <T> void postRequestForResultListT(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback, final T t) throws IOException {
+
+        final ResultList<T> result = new ResultList<>();
+
+        //添加参数
+        FormBody.Builder builder = new FormBody.Builder();
+        Set<Map.Entry<String, String>> entries = values.entrySet();
+        for (Map.Entry<String,String> entry:entries){
+            builder.add(entry.getKey(),entry.getValue());
+        }
+        FormBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url(path)
+                .post(body)
+                .build();
+
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(call,e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+
+                    String string = response.body().string();
+                    System.out.println(string);
+
+                    try {
+                        //HttpHelpUtils.parseJsonStringToResultListNew(result,string);
+                        HttpHelpUtils.parseJsonStringToResultListGeneric(result,string,t);
                     } catch (Exception e) {
                         e.printStackTrace();
                         callback.onFailure(call,e);
@@ -179,7 +245,7 @@ public class OkHttpUtils {
      * @param callback
      * @param <T>
      */
-    public static <T> void getRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback){
+    public static <T> void getRequestForResult(String path, HashMap<String,String> values, final OkHttpResponseCallback<Result<T>> callback,final T t){
         final Result<T> result = new Result<>();
 
         StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
@@ -206,7 +272,7 @@ public class OkHttpUtils {
                     String string = response.body().string();
 
                     try {
-                        HttpHelpUtils.parseJsonStringToResult(result,string);
+                        HttpHelpUtils.parseJsonStringToResultGeneric(result,string,t);
                     } catch (Exception e) {
                         e.printStackTrace();
                         callback.onFailure(call,e);
@@ -236,7 +302,7 @@ public class OkHttpUtils {
      * @param callback
      * @param <T>
      */
-    public static <T> void getRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback){
+    public static <T> void getRequestForResultList(String path, HashMap<String,String> values, final OkHttpResponseCallback<ResultList<T>> callback,final T t){
         final ResultList<T> result = new ResultList<>();
 
         StringBuilder parametersString = HttpHelpUtils.getParametersString(values);
@@ -264,7 +330,7 @@ public class OkHttpUtils {
                     String string = response.body().string();
 
                     try {
-                        HttpHelpUtils.parseJsonStringToResultList(result,string);
+                        HttpHelpUtils.parseJsonStringToResultListGeneric(result,string,t);
                     } catch (Exception e) {
                         e.printStackTrace();
                         callback.onFailure(call,e);

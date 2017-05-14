@@ -1,6 +1,7 @@
 package com.example.kodulf.utilsdemo.entity;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  "inprice":"2.880"
  },
  */
-public class City {
+public class City implements Serializable {
     private String city;
     private String company;
     private int companyType;
@@ -87,7 +88,7 @@ public class City {
         this.flows = flows;
     }
 
-    class Flow{
+    public class Flow implements Serializable{
 
         private int id;
         private String p;

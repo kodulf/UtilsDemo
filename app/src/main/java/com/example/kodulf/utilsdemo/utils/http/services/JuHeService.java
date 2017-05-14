@@ -40,7 +40,7 @@ public class JuHeService {
                 public void onResponse(Result<String> result) {
                     callback.onResponse(result);
                 }
-            });
+            },new String());
         } catch (Exception e) {
             e.printStackTrace();
             callback.onFailure(new Result<String>(),new Exception(e));
@@ -61,7 +61,7 @@ public class JuHeService {
                 public void onResponse(ResultList<City> resultList) {
                     callback.onResponse(resultList);
                 }
-            });
+            },new City());
         } catch (Exception e) {
             e.printStackTrace();
             callback.onFailure(new ResultList<City>(),e);

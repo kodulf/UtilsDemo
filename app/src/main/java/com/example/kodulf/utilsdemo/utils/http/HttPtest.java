@@ -4,6 +4,9 @@ import com.example.kodulf.utilsdemo.entity.City;
 import com.example.kodulf.utilsdemo.utils.http.okhttp.OkHttpResponseCallback;
 import com.example.kodulf.utilsdemo.utils.http.services.ServiceContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Call;
 
 /**
@@ -27,6 +30,15 @@ public class HttPtest {
                     @Override
                     public void onResponse(Call call, ResultList<City> cityResultList) {
                         System.out.println(cityResultList);
+                        List<City> result = cityResultList.getResult();
+                        for (int i = 0; i < result.size(); i++) {
+                            City city = result.get(i);
+                            System.out.println(city.getCity());
+                            ArrayList<City.Flow> flows = city.getFlows();
+                            for (int j = 0; j < flows.size(); j++) {
+                                System.out.println(flows.get(j).getP());
+                            }
+                        }
                     }
 
                 });

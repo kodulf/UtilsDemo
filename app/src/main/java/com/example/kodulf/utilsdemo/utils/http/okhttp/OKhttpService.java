@@ -42,7 +42,7 @@ public class OKhttpService {
                 public void onResponse(Call call, Result<String> stringResult) {
                     callback.onResponse(call,stringResult);
                 }
-            });
+            },new String());
         } catch (Exception e) {
             e.printStackTrace();
             callback.onFailure(null,new Exception(e));
@@ -53,7 +53,7 @@ public class OKhttpService {
         HashMap<String,String> values = new HashMap<>();
         values.put("key","8bc68ad662de727f393c3fe5490e17b9");
         try {
-            OkHttpUtils.postRequestForResultList(HttpStaticPath.FLOW_LIST, values, new OkHttpResponseCallback<ResultList<City>>() {
+            OkHttpUtils.postRequestForResultListT(HttpStaticPath.FLOW_LIST, values, new OkHttpResponseCallback<ResultList<City>>() {
                 @Override
                 public void onFailure(Call call, Exception e) {
                     callback.onFailure(call,e);
@@ -64,7 +64,7 @@ public class OKhttpService {
                     callback.onResponse(call,cityResultList);
                 }
 
-            });
+            },new City());
         } catch (Exception e) {
             e.printStackTrace();
             callback.onFailure(null,e);
