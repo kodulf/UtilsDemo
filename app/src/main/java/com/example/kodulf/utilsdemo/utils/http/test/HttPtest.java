@@ -1,6 +1,9 @@
-package com.example.kodulf.utilsdemo.utils.http;
+package com.example.kodulf.utilsdemo.utils.http.test;
 
 import com.example.kodulf.utilsdemo.entity.City;
+import com.example.kodulf.utilsdemo.utils.http.RequestCallback;
+import com.example.kodulf.utilsdemo.utils.http.Result;
+import com.example.kodulf.utilsdemo.utils.http.ResultList;
 import com.example.kodulf.utilsdemo.utils.http.okhttp.OkHttpResponseCallback;
 import com.example.kodulf.utilsdemo.utils.http.services.ServiceContext;
 

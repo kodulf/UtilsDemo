@@ -1,12 +1,10 @@
 package com.example.kodulf.utilsdemo.utils.http;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +51,9 @@ public class HttpHelpUtils {
 
             //更新result
             result.setResult(values);
-            result.setReason(responseObject.getReason());
-            result.setError_code(responseObject.getError_code());
         }
+        result.setReason(responseObject.getReason());
+        result.setError_code(responseObject.getError_code());
 
     }
 
@@ -96,72 +94,6 @@ public class HttpHelpUtils {
         }
         result.setError_code(responseObject.getError_code());
         result.setReason(responseObject.getReason());
-
-    }
-
-
-    /**
-     * 进行json 解析
-     * 在java 里面json 需要的jar包，http://download.csdn.net/detail/xushouwei/8888205
-     * 在android 里面直接使用fastjson就可以了
-     * @param result
-     * @param readString
-     * @param <T>
-     */
-    @Deprecated
-    public static <T> void parseJsonStringToResult(Result<T> result, String readString) throws Exception{
-        JSONObject jsonObject = JSON.parseObject(readString);
-
-        String reason = null;
-        int error_code = Result.FAIL;
-        T resultT =null;
-        try {
-            reason = jsonObject.getString("reason");
-            error_code= jsonObject.getInteger("error_code");
-            resultT = (T) jsonObject.getJSONObject("result");//这里可能有报错
-        }finally {
-            result.setError_code(error_code);
-            if(reason!=null)
-                result.setReason(reason);
-            if(resultT!=null)
-                result.setResult(resultT);
-        }
-
-    }
-
-
-    /**
-     * 进行json 解析
-     *  在java 里面json 需要的jar包，http://download.csdn.net/detail/xushouwei/8888205
-     * 在android 里面直接使用fastjson就可以了
-     * @param result
-     * @param readString
-     * @param <T>
-     */
-    @Deprecated
-    public static <T> void parseJsonStringToResultList(ResultList<T> result, String readString) throws Exception{
-
-        JSONObject jsonObject = JSON.parseObject(readString);
-
-        String reason = null;
-        int error_code = Result.FAIL;
-        ArrayList<T> arrayList = new ArrayList<T>();
-        try {
-            reason = jsonObject.getString("reason");
-
-            error_code= jsonObject.getInteger("error_code");
-
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
-            for (int i = 0; i < jsonArray.size(); i++) {
-                T t = (T) jsonArray.get(i);
-                arrayList.add(t);
-            }
-        }finally {
-            result.setError_code(error_code);
-            if(reason!=null)
-                result.setReason(reason);
-            result.setResult(arrayList);
-        }
 
     }
 

@@ -1,9 +1,11 @@
-package com.example.kodulf.utilsdemo.utils.http;
+package com.example.kodulf.utilsdemo.utils.http.test;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.kodulf.utilsdemo.entity.City;
+import com.example.kodulf.utilsdemo.utils.http.Result;
+import com.example.kodulf.utilsdemo.utils.http.ResultList;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
