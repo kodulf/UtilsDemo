@@ -87,8 +87,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ThirdActivity"></activity>
-
+        <activity android:name=".ThirdActivity" />
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

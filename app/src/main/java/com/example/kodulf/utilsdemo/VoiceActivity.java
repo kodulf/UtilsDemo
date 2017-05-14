@@ -1,8 +1,13 @@
 package com.example.kodulf.utilsdemo;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.RemoteInput;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -42,6 +47,7 @@ import okhttp3.Call;
  */
 public class VoiceActivity extends BaseActivity {
     private TextView mTextView;
+    public static final String EXTRA_VOICE_REPLY = "extra_voice_reply";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -310,5 +316,49 @@ public class VoiceActivity extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 发送一个支持wear的notification
+     * @param view
+     */
+    public void sendNotificationSupportWear(View view) {
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setSmallIcon(R.mipmap.ic_launcher).setContentTitle("Start")
+                .setContentText("Resume")
+                .setDefaults(NotificationCompat.DEFAULT_VIBRATE);//设置震动
+
+//                    Intent voiceReply = new Intent();
+//                    intent.setAction("android.intent.action.CALL");
+//                    intent.setData(Uri.parse("tel://17761838076"));
+
+        //单独的给可穿戴的启动ａｃｔｉｖｉｔｙ　，然后再在DetailActivity里面接收数据
+        Intent voiceReply =new Intent(this,DetailActivity.class);
+
+        //语音回复的输入
+        String replyLabel = "语音回复";
+        RemoteInput remoteInput = new RemoteInput.Builder(VoiceActivity.EXTRA_VOICE_REPLY)
+                .setLabel(replyLabel)
+                .build();
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,1998,voiceReply,PendingIntent.FLAG_UPDATE_CURRENT) ;
+        NotificationCompat.Action notificationAction =
+                new NotificationCompat.Action.Builder(R.mipmap.ic_launcher,"语音回复",pendingIntent)
+                        .addRemoteInput(remoteInput)
+                        .build();
+
+
+//                    builder.addAction(R.mipmap.ic_launcher,"action",pendingIntent);
+        builder.setContentIntent(pendingIntent);
+
+        //设置上面的notificatoinAction 只在手表端显示
+        builder.extend(new NotificationCompat.WearableExtender().addAction(notificationAction));
+
+        Notification n = builder.build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(998,n);
+
     }
 }
