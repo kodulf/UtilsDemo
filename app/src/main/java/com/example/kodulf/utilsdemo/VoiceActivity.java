@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kodulf.utilsdemo.activity.BaseActivity;
 import com.example.kodulf.utilsdemo.entity.City;
+import com.example.kodulf.utilsdemo.utils.Log;
 import com.example.kodulf.utilsdemo.utils.http.ResultList;
 import com.example.kodulf.utilsdemo.utils.http.okhttp.OkHttpResponseCallback;
 import com.example.kodulf.utilsdemo.utils.http.services.ServiceContext;
@@ -244,8 +244,14 @@ public class VoiceActivity extends BaseActivity {
     }
 
     private void startWakeUpService() {
-        Intent intent = new Intent(this,WakeupService.class);
-        startService(intent);
+        //只有在当前没有在运行的时候采取启动
+        //if(!AppUtils.isServiceRunning(getApplicationContext(),"com.example.kodulf.utilsdemo.utils.voice.WakeupService")) {
+            Log.d("kodulf","service 没有在运行");
+            Intent intent = new Intent(getApplicationContext(), WakeupService.class);
+            startService(intent);
+//        }else{
+//            Log.d("kodulf","service 正在在运行");
+//        }
     }
 
 

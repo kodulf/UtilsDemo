@@ -1,5 +1,6 @@
 package com.example.kodulf.utilsdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -87,6 +88,10 @@ public class MainActivity extends BaseActivity{
 
     }
 
+    public void jumptoVoice(View view) {
+        Intent intent = new Intent(this,VoiceActivity.class);
+        startActivity(intent);
+    }
 
 
 //    /**
