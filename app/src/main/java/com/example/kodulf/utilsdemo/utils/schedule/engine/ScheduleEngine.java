@@ -44,7 +44,7 @@ public class ScheduleEngine {
     }
     void startSchedule(Schedule schedule){
         try{
-            schedule.schedule();
+            schedule.syncSchedule();
         }catch (Throwable e){
             //忽略
         }

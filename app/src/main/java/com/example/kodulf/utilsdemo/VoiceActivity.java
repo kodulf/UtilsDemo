@@ -316,6 +316,7 @@ public class VoiceActivity extends BaseActivity {
                             sb.append( city.getCity()+" "+city.getFlows());
                             sb.append("\n");
                         }
+                        if(mTextView!=null)
                         mTextView.setText(sb.toString()+"");
                     }
                 });

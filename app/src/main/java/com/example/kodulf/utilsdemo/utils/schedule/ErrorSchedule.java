@@ -15,7 +15,7 @@ public class ErrorSchedule implements Schedule {
     private boolean next;
 
     @Override
-    public void schedule() {
+    public void syncSchedule() {
         syncError();
     }
 
