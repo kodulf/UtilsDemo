@@ -28,6 +28,8 @@ public class DetailActivity extends AppCompatActivity {
             Log.d("kodulf", "收到="+voiceReply+" sender="+sender);
 
             try {
+                //点亮屏幕，然后打开应用
+                AppUtils.lightScreen(getApplicationContext());
                 AppUtils.openApp(getApplicationContext(),"tech.androidstudio.myresume");
             } catch (Exception e) {
                 e.printStackTrace();
