@@ -125,15 +125,15 @@ public class MyClock extends View {
         //分
         handPaint.setColor(Color.BLUE);
         handPaint.setStrokeWidth(4);
-        length = (int)((radius-gap*1.5) * Math.cos((Math.PI*(15-minutes) * 6+seconds/10)/180));
-        height = (int)((radius-gap*1.5) * Math.sin((Math.PI*(15-minutes) * 6+seconds/10)/180));
+        length = (int)((radius-gap*1.5) * Math.cos((Math.PI*((15-minutes) * 6-seconds/10))/180));
+        height = (int)((radius-gap*1.5) * Math.sin((Math.PI*((15-minutes) * 6-seconds/10))/180));
         canvas.drawLine(centerX,centerY,centerX+length,centerY-height,handPaint);
 
 
         //小时
         handPaint.setStrokeWidth(6);
-        length = (int)((radius-gap*2) * Math.cos((Math.PI*(3-hours) * 30+minutes/10)/180));
-        height = (int)((radius-gap*2) * Math.sin((Math.PI*(3-hours) * 30+minutes/10)/180));
+        length = (int)((radius-gap*2) * Math.cos((Math.PI*((3-hours) * 30-minutes/2))/180));
+        height = (int)((radius-gap*2) * Math.sin((Math.PI*((3-hours) * 30-minutes/2))/180));
         canvas.drawLine(centerX,centerY,centerX+length,centerY-height,handPaint);
 
 
