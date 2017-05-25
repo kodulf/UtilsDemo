@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,6 +24,8 @@ public class MyClock extends View {
     private int gap;
     private Paint timePaint;
     private Paint handPaint;
+    private Handler handler;
+    private static final int RUN = 999;
 
     public MyClock(Context context) {
         //super(context);
@@ -32,6 +36,22 @@ public class MyClock extends View {
         super(context, attrs);
 
         initPaint();
+        handler  = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                int what = msg.what;
+                switch (what){
+                    case RUN:
+                        postInvalidate();
+                        break;
+
+                    default:
+
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -73,15 +93,28 @@ public class MyClock extends View {
         drawCircle(canvas, centerY, centerX);
         drawNumbers(canvas, centerY, centerX);
         drawPoint(canvas, centerY, centerX);
+        drawHand(canvas, centerY, centerX);
 
+        invalidate();
+
+        //每一秒钟更新一次
+        handler.sendEmptyMessageDelayed(RUN,1000);
+
+    }
+
+    /**
+     * 画时针，分针，秒针
+     * @param canvas
+     * @param centerY
+     * @param centerX
+     */
+    private void drawHand(Canvas canvas, int centerY, int centerX) {
         Date date = new Date();
         int hours = date.getHours();
         int minutes = date.getMinutes();
         int seconds = date.getSeconds();
 
         //先画线，然后画中间的小圆圈
-
-
 
         //秒钟
         handPaint.setStrokeWidth(2);
@@ -105,7 +138,6 @@ public class MyClock extends View {
 
 
         canvas.drawCircle(centerX, centerY,6, mPaint);
-
     }
 
     /**
