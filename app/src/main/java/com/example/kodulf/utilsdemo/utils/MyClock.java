@@ -73,7 +73,6 @@ public class MyClock extends View {
 
         handPaint = new Paint();
         handPaint.reset();
-        handPaint.setColor(Color.RED);
         handPaint.setAntiAlias(true);
 
     }
@@ -117,6 +116,7 @@ public class MyClock extends View {
         //先画线，然后画中间的小圆圈
 
         //秒钟
+        handPaint.setColor(Color.RED);
         handPaint.setStrokeWidth(2);
         int length = (int)((radius-gap*1.2) * Math.cos((Math.PI*(15-seconds) * 6)/180));
         int height = (int)((radius-gap*1.2) * Math.sin((Math.PI*(15-seconds) * 6)/180));
@@ -153,8 +153,6 @@ public class MyClock extends View {
             //需要注意sin，cos 里面的是double 类型的
             int length = (int)((radius) * Math.cos((Math.PI*i * 6)/180));
             int height = (int)((radius) * Math.sin((Math.PI*i * 6)/180));
-            Log.d("kodulf","length="+length);
-            Log.d("kodulf","width="+width);
 
             int length2 = (int)((radius-gap/2) * Math.cos((Math.PI*i * 6)/180));
             int height2 = (int)((radius-gap/2) * Math.sin((Math.PI*i * 6)/180));
@@ -168,8 +166,6 @@ public class MyClock extends View {
             //需要注意sin，cos 里面的是double 类型的
             int length = (int)((radius) * Math.cos((Math.PI*i * 30)/180));
             int height = (int)((radius) * Math.sin((Math.PI*i * 30)/180));
-            Log.d("kodulf","length="+length);
-            Log.d("kodulf","width="+width);
 
             int length2 = (int)((radius-gap) * Math.cos((Math.PI*i * 30)/180));
             int height2 = (int)((radius-gap) * Math.sin((Math.PI*i * 30)/180));
@@ -192,8 +188,6 @@ public class MyClock extends View {
             //需要注意sin，cos 里面的是double 类型的
             int length = (int)((radius+gap) * Math.cos((Math.PI*i * 30)/180));
             int height = (int)((radius+gap) * Math.sin((Math.PI*i * 30)/180));
-            Log.d("kodulf","length="+length);
-            Log.d("kodulf","width="+width);
 
             int num = (15-i)%12;
 
@@ -201,7 +195,7 @@ public class MyClock extends View {
                 num = 12;
             }
 
-            canvas.drawText(num+"",centerX+length,centerY-height,mPaint);
+            canvas.drawText(num+"",centerX+length,centerY-height+gap/2,mPaint);
 
         }
     }
