@@ -1,4 +1,4 @@
-package com.example.kodulf.utilsdemo;
+package com.example.kodulf.utilsdemo.activity;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kodulf.utilsdemo.activity.BaseActivity;
+import com.example.kodulf.utilsdemo.R;
 import com.example.kodulf.utilsdemo.entity.City;
 import com.example.kodulf.utilsdemo.utils.Log;
 import com.example.kodulf.utilsdemo.utils.http.ResultList;

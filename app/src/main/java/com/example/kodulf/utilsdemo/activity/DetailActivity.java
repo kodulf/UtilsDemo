@@ -1,4 +1,4 @@
-package com.example.kodulf.utilsdemo;
+package com.example.kodulf.utilsdemo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v4.app.RemoteInput;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.kodulf.utilsdemo.R;
 import com.example.kodulf.utilsdemo.utils.AppUtils;
 
 public class DetailActivity extends AppCompatActivity {

@@ -49,7 +49,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +74,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".VoiceActivity" />
+        <activity android:name=".activity.VoiceActivity" />
 
         <receiver
             android:name=".utils.voice.MachineStartReceiver"
@@ -87,11 +87,19 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ThirdActivity" />
+        <activity android:name=".activity.ThirdActivity" />
         <activity
-            android:name=".DetailActivity"
+            android:name=".activity.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ServiceActivity" />
+
+        <service
+            android:name=".services.PlayerService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".activity.ClockActivity"></activity>
     </application>
 
 </manifest>

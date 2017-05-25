@@ -1,9 +1,10 @@
-package com.example.kodulf.utilsdemo;
+package com.example.kodulf.utilsdemo.activity;
 
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.kodulf.utilsdemo.activity.BaseActivity;
+import com.example.kodulf.utilsdemo.MyApplication;
+import com.example.kodulf.utilsdemo.R;
 
 public class ThirdActivity extends BaseActivity {
 

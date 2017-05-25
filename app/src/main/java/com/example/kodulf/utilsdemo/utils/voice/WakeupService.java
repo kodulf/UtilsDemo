@@ -9,7 +9,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.kodulf.utilsdemo.R;
-import com.example.kodulf.utilsdemo.VoiceActivity;
+import com.example.kodulf.utilsdemo.activity.VoiceActivity;
 import com.example.kodulf.utilsdemo.utils.AppUtils;
 import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;

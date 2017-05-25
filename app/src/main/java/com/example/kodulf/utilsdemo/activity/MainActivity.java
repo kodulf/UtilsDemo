@@ -1,4 +1,4 @@
-package com.example.kodulf.utilsdemo;
+package com.example.kodulf.utilsdemo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kodulf.utilsdemo.activity.BaseActivity;
+import com.example.kodulf.utilsdemo.R;
 import com.example.kodulf.utilsdemo.entity.City;
 import com.example.kodulf.utilsdemo.utils.http.ResultList;
 import com.example.kodulf.utilsdemo.utils.http.okhttp.OkHttpResponseCallback;
@@ -90,6 +90,11 @@ public class MainActivity extends BaseActivity{
 
     public void jumptoVoice(View view) {
         Intent intent = new Intent(this,VoiceActivity.class);
+        startActivity(intent);
+    }
+
+    public void jumpToClock(View view) {
+        Intent intent = new Intent(this,ClockActivity.class);
         startActivity(intent);
     }
 

@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kodulf.utilsdemo.activity.ThirdActivity">
+    android:orientation="vertical"
+    tools:context="com.example.kodulf.utilsdemo.activity.ClockActivity">
 
-    <Button
+    <com.example.kodulf.utilsdemo.utils.MyClock
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px1_x"
-        android:text="exit"
-        android:onClick="exitApp"/>
-
+        android:layout_height="match_parent" />
 </LinearLayout>
